@@ -1,0 +1,25 @@
+# Example code to demonstrate the operation of if statements
+---
+mandatory: True
+question: Age eligibility
+subquestion: |
+  Hello **${ BRMname }**, 
+  you are ${ BRMage_ok } 
+buttons:
+  - Exit: exit
+  - Restart: restart
+---
+code: |
+  if ( (BRMage > 18) and (BRMage < 50) ):
+    BRMage_ok = True 
+  else:
+    BRMage_ok = False
+ ---
+question: What is your age?
+fields:
+  - Age: BRMage  
+    datatype: integer
+---
+question: What is your name?
+fields: 
+  - Name: BRMname

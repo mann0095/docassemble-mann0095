@@ -1,0 +1,55 @@
+# Example code to demonstrate the operation of if statements
+---
+mandatory: True
+question: Income Assessment
+subquestion: |
+  Hello **${ BRMname }**
+  
+  % if BRMpartner == 'Yes':
+  Your partner's name is ${ BRMpartnername }
+  % endif
+  
+  % if BRMannualincome > 0:
+  Your annual income is ${ currency(BRMannualincome) }
+  % else:
+  You do not earn an income
+  % endif
+  
+  % if BRMpartnerincome > 0:
+  and your partner's annual income is ${ currency(BRMpartnerincome) }
+  % else:
+  and your partner does not earn an income
+  % endif
+  
+  Your total household income is ${ currency(BRMannualincome + BRMpartnerincome) }
+  
+  Your average household income is ${ currency((BRMannualincome + BRMpartnerincome) / 2) }
+buttons:
+  - Exit: exit
+  - Restart: restart
+---
+question: What is your Name & Income?
+fields:
+  - Name: BRMname
+  - What is your {annual income}?: BRMannualincome
+    datatype: currency
+terms:
+  annual income: |
+    Your annual income is the amount you earn in one fiscal year.
+---
+question: Partners Name & Income
+fields:
+  - Do you have a partner?: BRMpartner
+    datatype: radio
+    choices:
+       - Yes
+       - No
+  - What is your partners name?: BRMpartnername
+    show if: 
+      variable: BRMpartner
+      is: 'Yes'
+  - What is your partners annual income?: BRMpartnerincome
+    datatype: currency
+    show if:
+      variable: BRMpartner
+      is: 'Yes'

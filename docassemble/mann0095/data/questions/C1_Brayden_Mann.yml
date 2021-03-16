@@ -1,0 +1,156 @@
+# Completing a Federal Court Form 1
+---
+objects:
+  - endpoint: DADict
+---
+# This is the welcome screen.  The user can choose to exit here
+# if they don't wish to accept the disclaimer
+mandatory: True
+question: Australian CFDS
+subquestion: |
+  # Welcome 
+  ### to the **Australian Court Form** 
+  ### **Drafting Service!** 
+   
+  We can assist by drafting the Court Forms that you need!
+  
+  Please note that we can only currently draft Federal Court & Federal Circuit Court Forms.
+
+  ***Disclaimer:***  
+  **Any forms produced by Australian CFDS must be checked by a lawyer.**
+  **Australian CFDS does not provide legal advice, nor is a client-solicitor relationship created through your use of our services.**
+ 
+
+  By continuing you agree to be bound by these terms. 
+buttons:
+  - "I accept and want to continue": continue
+  - "I do not accept": exit
+    url: https://www.fedcourt.gov.au/
+---
+# This code block assesses which Court their Form is for 
+mandatory: True
+question: Which Court?
+fields:
+  - Which Australian Court is the Form for?: BRMcourt
+    datatype: radio
+    choices:
+      - Magistrates Court
+      - District Court
+      - Supreme Court
+      - Federal Court
+      - Federal Circuit Court
+---
+# This code block sends them to an eligible or ineligible endpoint 
+mandatory: True
+code: |
+  if BRMcourt == 'Federal Court' or BRMcourt == 'Federal Circuit Court':
+    endpoint['eligible']
+  else:
+    endpoint['ineligible']
+---
+# This is the ineligible endpoint
+event: endpoint['ineligible']
+question: Sorry
+subquestion: |
+  ### We cannot currently draft the Form for this Court.
+  
+  
+  We can draft Federal Court & Federal Circuit Court Forms though! 
+  
+  Click restart & navigate to these Forms.
+buttons:
+  - Exit: exit
+    url: https://www.fedcourt.gov.au/
+  - Restart: restart
+---
+# This is the eligible endpoint.
+event: endpoint['eligible']
+question: Australian CFDS
+subquestion: |
+
+  Your Form 1 has been completed with the following details:
+  
+  Column1|Column2
+  -------|-------
+  You are the                 | ${ BRMrole }
+  Applicant's Name            | ${ BRMapfmn } ${ BRMapln }
+  Respondent's Name           | ${ BRMrfmn } ${ BRMrln }
+  Appropriate State           | ${ BRMstate }
+  Court Division              | ${ BRMdivision }
+  Date of Claim               | ${ BRMdate } ${ BRMmonth } ${ BRMyear }
+  Address for Service         | ${ BRMaddress }
+  Your Lawyer                 | ${ BRMlawyer } of ${ BRMfirm }
+  Lawyer's Phone Number       | ${ BRMlphone } 
+  Lawyer's Fax Number         | ${ BRMlfax }
+  Lawyer's Email Address      | ${ BRMlemail }
+  
+  You download, print or even email your completed Form 1!
+  
+  Thank you for using the 
+  ### Australian Court Form Drafting Service!
+attachment:
+  - name: Federal Court Form 1
+    docx template file: FCA_Form_1.docx
+    valid formats:
+      - pdf
+buttons:
+  - Exit: exit
+    url: https://www.fedcourt.gov.au/
+  - Restart: restart
+---
+# Everything below is code for asking the required details for the Form 1
+question: Your Role
+fields:
+  - Are you the {Applicant} or {Respondent} in this claim?: BRMrole
+    datatype: radio
+    choices:
+      - Applicant
+      - Respondent
+terms:
+  Applicant: |
+    The Applicant is the one who initiates the claim 
+  Respondent: |
+    The Respondent responds to the Applicant's claim
+---
+question: Details of the Applicant
+fields:
+  - What is the **First & Middle Name/s** of the {Applicant}?: BRMapfmn
+  - What is the **Last Name** of the {Applicant}?: BRMapln
+terms:
+  Applicant: |
+    The Applicant is the one who initiates the claim 
+---
+question: Details of the Respondent
+fields:
+  - What is the **First Name & Middle Name** of the {Respondent}?: BRMrfmn
+  - What is the **Last Name** of the {Respondent}?: BRMrln
+terms:
+  Respondent: |
+    The Respondent responds to the Applicant's claim
+---
+question: Form 1 Details
+fields:
+  - From which **Australian State** are you commencing the claim?: BRMstate
+  - Which is the relevant **Court Division** for your claim?: BRMdivision
+    datatype: radio
+    choices:
+      - Corporations
+      - Criminal
+      - Employment
+      - General
+  - What is your **Address for service** of the claim?: BRMaddress
+---
+question: Date of Claim (eg. 1 January 2021)
+fields: 
+  - What is the **date** of claim?: BRMdate
+  - What is the **month** of claim?: BRMmonth
+  - What is the **year** of claim?: BRMyear
+---
+question: Your Lawyer
+fields:
+  - What is your **Lawyer's name**?: BRMlawyer
+  - What **Law Firm** are they from?: BRMfirm
+  - What is their **phone number**?: BRMlphone
+  - What is their **fax number**?: BRMlfax
+  - What is their **email address**?: BRMlemail
+---

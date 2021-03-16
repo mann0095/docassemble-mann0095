@@ -1,0 +1,42 @@
+# Example code to demonstrate the operation of if statements
+---
+mandatory: True
+question: Age eligibility
+subquestion: |
+  Hello **${ BRMname }**
+   
+  You are ${ BRMage_ok } and 
+  % if BRMannualincome > 0:
+  your annual income is ${ currency(BRMannualincome) }
+  % else:
+   you do not earn an income
+  % endif
+buttons:
+  - Exit: exit
+  - Restart: restart
+---
+code: |
+  if 18 <= BRMage <= 65:
+    BRMage_ok = 'adult'
+  elif BRMage < 18:
+    BRMage_ok = 'child'
+  else:
+    BRMage_ok = 'pensioner'
+---
+question: What is your age?
+fields:
+  - no label: BRMage
+    datatype: integer
+---
+question: What is your name?
+fields:
+  - Name: BRMname
+---
+question: Income
+fields:
+  - What is your {annual income}?: BRMannualincome
+    datatype: currency
+terms:
+  annual income: |
+    Your annual income is the amount you earn in one fiscal year.
+---
