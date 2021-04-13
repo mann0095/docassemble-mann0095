@@ -22,6 +22,8 @@
 include:
   - X1.01.questions.yml
   - X1.01.endpoints.yml
+  - X1.01.leftendpoints.yml
+  - X1.01.leftquestions.yml
 ---
 # We start off with a 'Welcome screen'.  Students should 
 # replace the boilerplate text with a meaningful explanation
@@ -31,21 +33,28 @@ include:
 # Ideally, there should never be more than two - a welcome 
 # screen and a code block to drive the app.
 mandatory: True
-question: Breach of Contract App
+question: BreachedContract.Com
 subquestion: |
-  This is the first or 'Welcome' screen that the user
-  sees when they run the app.  This screen should describe
-  what the app does to the user.
+  ## **Has your Contract been Breached?**
+  
+  
+   We can help determine:
+   
+   * If there was a **Contract**; and 
+   
+   * Whether it has been **Breached**
 
-  The screen may also need to include a disclaimer, particularly
-  as this app is providing legal advice.
-
-  The screen should contain a click-through agreement indicating
-  the user agrees to the disclaimer and any other terms before
-  proceeding.
-
-  The screen should also give the user the option to exit the
-  app at this point
+  Answer the questions to find if you have a claim.
+  
+  
+  
+  ***Disclaimer***  
+  
+  *By clicking continuing you agree that BreachedContract.com:*
+  
+  * *provides legal information and not legal advice; and*
+  * *is no substitute for obtaining legal advice from a qualified lawyer.*
+  
 buttons:
   - I agree and wish to continue: continue
   - I do not agree and wish to exit: exit
@@ -65,7 +74,18 @@ code: |
   if MJFsue_reason == 'MJFpromisor':
     # Students will need to put logic in here
     # for the promisor part of the code
-    pass
+    BRMwork_requested
+    BRMpayment_agreed
+    
+    if BRMcertainty == 'BRMagree_exact' and BRMconsideration == True and BRMcapacity == True:
+      BRMcontract_exists = True
+    else:
+      BRMcontract_exists = False
+
+    # Now we know whether there is a contract or not we can display
+    # the final screen that contains a result and an explanation of why
+    endpoints['BRMfinal_screen']
+    
   elif MJFsue_reason == 'MJFpromisee':
     # This is right side of the flowchart.  Off we go!
 

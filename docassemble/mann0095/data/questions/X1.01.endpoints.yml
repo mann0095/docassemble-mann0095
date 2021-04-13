@@ -118,3 +118,4 @@ content: |
   % if not MJFwritten_contract:
   ${ MJFwritten_contract_template }
   % endif
+ 
